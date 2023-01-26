@@ -1,27 +1,20 @@
-import { TextField } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import Typography from '@mui/material/Typography'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createCaseCollection } from 'api/mutation/createCaseCollection'
-import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-export default function ModalCreate({ id }: any) {
+export default function ModalViewHistory({ id }: any) {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const queryClient = useQueryClient()
   const [req, setReq] = useState({})
-  const idCollection = id
-
-  const addCase = useMutation({
-    mutationFn: (id: string) => createCaseCollection(req, idCollection),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['collections'] })
-      console.log('data: ', data)
-    },
-  })
+  const [data, setData] = useState([])
+  const moment = require('moment')
+  const router = useRouter()
 
   const style = {
     position: 'absolute' as 'absolute',
@@ -34,6 +27,20 @@ export default function ModalCreate({ id }: any) {
     boxShadow: 24,
     p: 8,
   }
+  const a: any = []
+
+  useEffect(() => {
+    if (!id) return
+    const fetchData = async () => {
+      const url = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/history/collection/${id}`
+      const result = await axios(url)
+      setData(result.data.result.data)
+    }
+    fetchData()
+  }, [id])
+
+  console.log(data, 'dataResault')
+  if (!data) return <div>loading</div>
 
   return (
     <div>
@@ -42,7 +49,7 @@ export default function ModalCreate({ id }: any) {
         className="inline-flex rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
         onClick={handleOpen}
       >
-        Create
+        View History
       </Button>
       <Modal
         open={open}
@@ -51,41 +58,83 @@ export default function ModalCreate({ id }: any) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography className="pb-8" id="modal-modal-title" variant="h6" component="h2">
-            Test Payload
-          </Typography>
-          <div className="grid grid-rows-3 gap-8">
-            {/* <div className="flex flex-row">
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Req Header:
-              </Typography>
-              <TextField className="h-4 w-80 pl-8 pt-4" id="outlined-basic" variant="outlined" />
-            </div> */}
-            <div className="flex flex-row gap-12">
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Req Body:
-              </Typography>
-              <TextField
-                onChange={(event) => {
-                  setReq(event.target.value)
-                }}
-                className=""
-                multiline
-                rows={5}
-                maxRows={100}
-              />
-            </div>
-            <div className="flex justify-end">
-              <Button
-                onClick={() => {
-                  addCase.mutate('')
-                }}
-                size="small"
-                variant="outlined"
-                className="h-max"
-              >
-                Save
-              </Button>
+          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <div className="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+                <table className="w-full min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      >
+                        Result
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      >
+                        Method
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      >
+                        Endpoint
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                      >
+                        Time test
+                      </th>
+                      {/* <th scope="col" className="relative px-6 py-3">
+                      <span className="sr-only">Edit</span>
+                    </th> */}
+                      {/* <th scope="col" className="relative px-6 py-3">
+                        <span className="sr-only">Delete</span>
+                      </th> */}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 bg-white">
+                    {data?.map((posts: any) => (
+                      <tr key={'dfsdfsd'}>
+                        <td className=" whitespace-nowrap px-6 py-4 text-sm font-medium text-blue-400 text-gray-900 underline">
+                          {posts.result}
+                        </td>
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{posts.method}</td>
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{posts.endpoint}</td>
+                        {/* <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">{posts.updated_at}</td> */}
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+                          {moment(posts.updated_at).format('MMMM Do YYYY, h:mm:ss a')}
+                        </td>
+                        {/* <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                          Edit
+                        </a>
+                      </td> */}
+                        <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                          {/* <button
+                            className="text-red-700 hover:text-indigo-900"
+                            onClick={() => deleteCollectionMutation.mutate(posts._id)}
+                          >
+                            Delete
+                          </button> */}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* <div className="flex justify-start">
+                <Button
+                  type="button"
+                  className="m-4 rounded bg-red-500 font-bold text-white hover:bg-red-700"
+                  onClick={() => setOpen(false)}
+                >
+                  CLOSE
+                </Button>
+              </div> */}
             </div>
           </div>
         </Box>

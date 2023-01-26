@@ -11,10 +11,6 @@
     @apply font-inter m-0 h-full w-full touch-manipulation p-0 text-base antialiased;
   }
 
-  body {
-    @apply w-full;
-  }
-
   a {
     color: inherit;
     text-decoration: none;

@@ -13,10 +13,10 @@ interface TabsProps {
 
 export default function Tabs({ tabs }: TabsProps) {
   return (
-    <MuiTabs className="bg-slate-100">
+    <MuiTabs className="bg-primary mb-4 rounded text-white sm:mb-6">
       {tabs.map((tab) => (
         <Link key={tab.href + tab.label} href={tab.href} passHref>
-          <Tab label={tab.label} className="font-bold tracking-tight" />
+          <Tab label={tab.label} className="text-lg font-semibold leading-4 tracking-wide active:text-white" />
         </Link>
       ))}
     </MuiTabs>

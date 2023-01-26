@@ -35,10 +35,10 @@ const ShowDetail = () => {
   const tabs = siteSettings(id as string)
 
   return (
-    <>
-      <Tabs tabs={tabs.tabsNavigation.menu}></Tabs>
+    <div className="my-4 sm:my-6">
+      <Tabs tabs={tabs.tabsNavigation.menu} />
       <CollectionDetail data={data} id={id} />
-    </>
+    </div>
   )
 }
 

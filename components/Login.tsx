@@ -30,11 +30,11 @@ export default function Login() {
 
   return (
     <div className="bg-beigh relative flex min-h-screen flex-col justify-center overflow-hidden">
-      <div className="m-auto w-full rounded-md bg-white p-6 shadow-md lg:max-w-xl">
-        <h1 className="text-center text-3xl font-semibold text-green-800 underline">Log in</h1>
+      <div className="bg-primary m-auto w-full rounded-md p-6 drop-shadow lg:max-w-xl">
+        <h1 className="text-secondary text-center text-3xl font-bold uppercase drop-shadow ">Sign In</h1>
         <form className="mt-6" onSubmit={handleSubmit}>
           <div className="mb-2">
-            <label htmlFor="username" className="block text-sm font-semibold text-gray-800">
+            <label htmlFor="username" className="text-secondary block text-sm font-bold uppercase drop-shadow">
               Username
             </label>
             <input
@@ -50,7 +50,7 @@ export default function Login() {
             />
           </div>
           <div className="mb-2">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-800">
+            <label htmlFor="password" className="text-secondary block text-sm font-bold uppercase drop-shadow">
               Password
             </label>
             <input
@@ -65,7 +65,11 @@ export default function Login() {
               className="mt-2 block w-full rounded-md border bg-white px-4 py-2 text-black focus:border-black focus:outline-none focus:ring focus:ring-green-900 focus:ring-opacity-40"
             />
           </div>
-          <button>Submit</button>
+          <div className="flex justify-center">
+            <button className=" bg-secondary hover:bg-secondary-600 mt-8 inline-flex rounded py-2 px-4 font-bold text-white">
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>

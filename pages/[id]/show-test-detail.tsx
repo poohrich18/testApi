@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { fetchPosts } from 'api/queries/getPosts'
+import { getHistoryById } from 'api/queries/getHistoryById.'
 import CollectionTest from 'components/CollectionTest'
 import Layout from 'components/Layout'
 import Tabs from 'components/Tabs'
@@ -10,9 +10,15 @@ import { siteSettings } from 'settings'
 const ShowTestDetail = () => {
   const router = useRouter()
   const id = router?.query?.id
+  // const { data, isLoading, isFetching, error } = useQuery({
+  //   queryKey: ['collections'],
+  //   queryFn: fetchPosts,
+  //   keepPreviousData: true,
+  //   enabled: !!id,
+  // })
   const { data, isLoading, isFetching, error } = useQuery({
     queryKey: ['collections'],
-    queryFn: fetchPosts,
+    queryFn: () => getHistoryById(id as string),
     keepPreviousData: true,
     enabled: !!id,
   })
@@ -38,10 +44,10 @@ const ShowTestDetail = () => {
   // console.log('file: show-test-detail.tsx:12 ~ ShowTestDetail ~ tabs', tabs)
 
   return (
-    <>
+    <div className="my-4 sm:my-6">
       <Tabs tabs={tabs.tabsNavigation.menu}></Tabs>
-      <CollectionTest id={id} />
-    </>
+      <CollectionTest id={id} data={data} />
+    </div>
   )
 }
 

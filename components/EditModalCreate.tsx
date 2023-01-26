@@ -35,7 +35,7 @@ export default function EditModalCreate({ id, data, dataAll, index }: any) {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 1000,
+    width: 500,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -46,7 +46,7 @@ export default function EditModalCreate({ id, data, dataAll, index }: any) {
     <div>
       <Button
         type="button"
-        className="inline-flex rounded bg-green-500 py-2 px-4 font-bold text-white hover:bg-green-600"
+        className="bg-info inline-flex rounded py-2 px-4 font-bold text-white hover:bg-[#8E2800]"
         onClick={handleOpen}
       >
         Edit
@@ -61,7 +61,7 @@ export default function EditModalCreate({ id, data, dataAll, index }: any) {
           <Typography className="pb-8" id="modal-modal-title" variant="h6" component="h2">
             Test Payload
           </Typography>
-          <div className="grid grid-rows-3 gap-8">
+          <div className="grid grid-rows-2 gap-16">
             {/* <div className="flex flex-row">
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 Req Header:
@@ -78,19 +78,19 @@ export default function EditModalCreate({ id, data, dataAll, index }: any) {
                 }}
                 className=""
                 multiline
-                rows={2}
+                rows={6}
                 maxRows={100}
                 value={req}
               />
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-24">
               <Button
                 onClick={() => {
                   mapData()
                 }}
                 size="small"
                 variant="outlined"
-                className="h-max"
+                className="bg-secondary hover:bg-secondary-500 m-4 rounded font-bold text-white"
               >
                 Save
               </Button>
